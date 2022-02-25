@@ -1,0 +1,48 @@
+﻿@using SampleApp.Client.Models
+@using SampleApp.Client.Enums
+@using SampleApp.Client.Services
+@using System.ComponentModel.DataAnnotations
+@inject UsersService usersService
+
+<MudDialog>
+    <DialogContent>
+
+        <EditForm Model="model" OnValidSubmit="OnValidSubmit">
+            <MudCard>
+                <MudCardContent>
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <MudTextField @bind-Value="model.Name"
+                                  For="@(() => model.Name)"
+                                  Immediate="true"
+                                  Label="Name" />
+                    <MudSelect @bind-Value="model.UserType" Label="Select User Type" Placeholder="Please Select"
+                               AdornmentIcon="@Icons.Material.Filled.People" AdornmentColor="Color.Primary">
+                        <MudSelectItem Value="@UserType.Administrator">Admin</MudSelectItem>
+                        <MudSelectItem Value="@UserType.Manager">Manager</MudSelectItem>
+                        <MudSelectItem Value="@UserType.Customer">Customer</MudSelectItem>
+                    </MudSelect>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="demo-form-button">Save</MudButton>
+                </MudCardActions>
+            </MudCard>
+
+        </EditForm>
+    </DialogContent>
+</MudDialog>
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    AddUserForm model= new AddUserForm();
+
+    private async Task OnValidSubmit(EditContext context)
+    {
+        int id = await usersService.CreateUser(model);
+        if (MudDialog != null)
+            MudDialog.Close(DialogResult.Ok(id));
+
+    }
+
+}
