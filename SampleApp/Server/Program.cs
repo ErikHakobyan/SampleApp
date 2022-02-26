@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SampleApp.Application;
 using SampleApp.Infrastructure;
 using SampleApp.Infrastructure.Persistence;
+using SampleApp.Server;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,10 @@ using (var scope = app.Services.CreateScope())
         throw;
     }
 }
+
+
+//Configure global exceptions handling
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

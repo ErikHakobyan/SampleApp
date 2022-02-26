@@ -17,9 +17,9 @@ public class UsersService
     {
         return await _client.GetFromJsonAsync<User>($"api/Users/{Id}");
     }
-    public async Task<PaginatedList<User>> GetUsers(int pageNumber =1, int pageSize=10)
+    public async Task<PaginatedList<User>> GetUsers(int pageNumber =1, int pageSize=10,string orderby = "Created")
     {
-        return await _client.GetFromJsonAsync<PaginatedList<User>>($"api/Users?PageNumber={pageNumber}&PageSize={pageSize}");
+        return await _client.GetFromJsonAsync<PaginatedList<User>>($"api/Users?PageNumber={pageNumber}&PageSize={pageSize}&OrderProperty={orderby}");
     }
     public async Task<int> CreateUser(AddUserForm user)
     {
